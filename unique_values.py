@@ -1,3 +1,46 @@
+import random
+
+# set_generator for add & mult with little hardcoding
+
+def build_set_mult():
+    mi = 1
+    ma = 10
+    my_set = set()
+    while len(my_set) < int((ma * (ma + 1) / 2)):
+        n1 = random.randint(mi, ma)
+        n2 = random.randint(mi, ma)
+        key = (min(n1, n2), max(n1, n2))
+
+        if key in my_set:
+            continue
+        
+        my_set.add(key)
+    return my_set, len(my_set)
+
+print(f"Set(x):{build_set_mult()}\n")
+
+
+
+def build_set_add():
+    mi = 1
+    ma = 100
+    my_set = set()
+    while len(my_set) < int((ma * (ma + 1) / 2)):
+        n1 = random.randint(mi, ma)
+        n2 = random.randint(mi, ma)
+        key = (min(n1, n2), max(n1, n2))
+
+        if key in my_set:
+            continue
+        
+        my_set.add(key)
+    return my_set, len(my_set)
+
+print(f"Set(+):{build_set_add()}\n")
+
+print("Done!")
+
+'''
 def go():
     my_set = set()
     while len(my_set) < 3:
@@ -14,6 +57,9 @@ def go():
     return my_set
 
 print(go())
+
+
+
 
 
 # use a set to scale
@@ -34,6 +80,7 @@ while len(my_numbers) < 3:
     my_numbers.append(numb)
 
 print(my_numbers)
+
 
 
 while True:
@@ -57,7 +104,7 @@ while True:
     if name.strip().lower() != "caca":
         break
 
-'''
+
 
 “Can I write the stop condition before the loop starts?”
 	•	Yes → use while condition

@@ -21,14 +21,12 @@ def generate_question_mult():
     expected = number1 * number2
     return number1, number2, expected
 
-
 def max_iters_mult():
     range_down = 1
     range_up = 10
     n = range_up+1 - range_down
     max_iter = int(n * (n+1) / 2)
-    return max_iter
-
+    return range_down, range_up, max_iter
 
 def generate_question_add():
 
@@ -38,6 +36,43 @@ def generate_question_add():
     number2 = random.randint(range_down, range_up)
     expected = number1 + number2
     return number1, number2, expected
+
+def max_iters_add():
+    range_down = 1
+    range_up = 100
+    max_iter = int((range_up * (range_up + 1) / 2))
+    return range_down, range_up, max_iter
+
+def build_set_mult():
+    mi = 1
+    ma = 10
+    my_set = set()
+    while len(my_set) < int((ma * (ma + 1) / 2)):
+        n1 = random.randint(mi, ma)
+        n2 = random.randint(mi, ma)
+        key = (min(n1, n2), max(n1, n2))
+
+        if key in my_set:
+            continue
+        
+        my_set.add(key)
+    return my_set, len(my_set)
+
+def build_set_add():
+    mi = 1
+    ma = 100
+    my_set = set()
+    while len(my_set) < int((ma * (ma + 1) / 2)):
+        n1 = random.randint(mi, ma)
+        n2 = random.randint(mi, ma)
+        key = (min(n1, n2), max(n1, n2))
+
+        if key in my_set:
+            continue
+        
+        my_set.add(key)
+    return my_set, len(my_set)
+
 
 
 
@@ -54,7 +89,7 @@ def main():
                 iterations = input("How many questions do you want to work on? (min = 1 and max = 55 to get questions. 0 to end the program): ").strip()
                 try:
                     iterations = int(iterations)
-                    max_iter = max_iters_mult()
+                    range_down, range_up, max_iter = max_iters_mult()
                     if (topic == "m" and iterations <= max_iter) or (topic == "a"):
                         start_time = time.perf_counter()
                         answers_so_far = 0
@@ -68,25 +103,27 @@ def main():
 
                             while True:  
                                 key = (min(number1, number2), max(number1, number2))
-                                if (topic == "m") and (key not in my_set):
+                                if (topic == "m") and (key in my_set):
+                                    continue
+                                elif (topic == "m") and (key not in my_set) or (topic == "a"):
                                     my_set.add(key)  
-                                your_answer = input(f" Question # {i+1}: How much is {number1} {operator_symbol} {number2}? \n") 
-                                your_answer = your_answer.strip()
-                                if your_answer.lower() == "q": # Command before parsing
-                                    print("We are ending this program. Goodbye!")
-                                    return
-                                try:
-                                    your_answer = int(your_answer)
-                                    
-                                    answers_so_far += 1
-                                    if your_answer == expected:
-                                        points += 1
-                                        print(f"Correct!\n Number of points: {points} / {answers_so_far}\n")
-                                    else:
-                                        print(f"Incorrect! The correct answer was {expected}\n Number of points: {points} / {answers_so_far}\n")
-                                    break 
-                                except ValueError:
-                                    print("Make sure to enter a number only (integer).\n")
+                                    your_answer = input(f"Question # {i+1}: How much is {number1} {operator_symbol} {number2}? \n") 
+                                    your_answer = your_answer.strip()
+                                    if your_answer.lower() == "q": # Command before parsing
+                                        print("We are ending this program. Goodbye!")
+                                        return
+                                    try:
+                                        your_answer = int(your_answer)
+
+                                        answers_so_far += 1
+                                        if your_answer == expected:
+                                            points += 1
+                                            print(f"Correct!\nNumber of points: {points} / {answers_so_far}\n")
+                                        else:
+                                            print(f"Incorrect! The correct answer was {expected}\nNumber of points: {points} / {answers_so_far}\n")
+                                        break 
+                                    except ValueError:
+                                        print("Make sure to enter a number only (integer).\n")
                         end_time = time.perf_counter()
                         elapsed_time = end_time - start_time
                     else:
@@ -109,7 +146,7 @@ def main():
             
 
         
-        
+# make the file usable as a script as well as an importable module, because the code that parses the command line only runs if the module is executed as the “main” file    
         
 if __name__ == "__main__":     
     main()
